@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Иван Каширин — Начинающий AI-разработчик</title>
+
+    <style>
+        /* ============================================================
+                   CSS
+                   ============================================================ */
+
+        /* ---------- Базовые сбросы и переменные ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #ffffff;
+            --bg-secondary: #f6f8fa;
+            --text: #1a1a2e;
+            --text-muted: #4a4a5a;
+            --accent: #6c5ce7;
+            --accent-light: #a29bfe;
+            --card-bg: #ffffff;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            --border: #e8e8ec;
+            --transition: 0.35s ease;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0d0d1a;
+            --bg-secondary: #161625;
+            --text: #eaeaf0;
+            --text-muted: #b0b0c0;
+            --accent: #7c6cf0;
+            --accent-light: #a29bfe;
+            --card-bg: #1a1a2e;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            --border: #2a2a3e;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            transition: background var(--transition), color var(--transition);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ---------- Кнопка переключения темы ---------- */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 24px;
+            z-index: 1000;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 10px 16px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            color: var(--text);
+            box-shadow: var(--shadow);
+            transition: background var(--transition), color var(--transition), transform 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.03);
+        }
+
+        .theme-toggle .icon {
+            font-size: 1.3rem;
+            line-height: 1;
+        }
+
+        /* ---------- Секции ---------- */
+        section {
+            padding: 80px 0;
+            transition: background var(--transition);
+        }
+
+        section:nth-child(even) {
+            background: var(--bg-secondary);
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .section-sub {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 48px;
+        }
+
+        /* ---------- ГЕРО (первый экран) ---------- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 100px 24px 80px;
+            background: var(--bg);
+            transition: background var(--transition);
+        }
+
+        .hero-content {
+            max-width: 780px;
+        }
+
+        .hero-avatar {
+            font-size: 4.5rem;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .hero .subtitle {
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .hero .bio {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 560px;
+            margin: 0 auto 36px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 36px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(108, 92, 231, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(108, 92, 231, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            box-shadow: none;
+            border: 2px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            background: var(--bg-secondary);
+            box-shadow: none;
+            transform: translateY(-2px);
+        }
+
+        /* ---------- Обо мне ---------- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: start;
+        }
+
+        .about-text p {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .about-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        .about-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .about-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .about-list li:last-child {
+            border-bottom: none;
+        }
+
+        .about-list .emoji {
+            font-size: 1.4rem;
+            width: 32px;
+            text-align: center;
+        }
+
+        /* ---------- Чему хочу научиться ---------- */
+        .learn-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 28px;
+            margin-top: 8px;
+        }
+
+        .learn-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 32px 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: transform 0.25s, box-shadow 0.25s;
+            text-align: center;
+        }
+
+        .learn-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        [data-theme="dark"] .learn-card:hover {
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .learn-card .icon {
+            font-size: 2.8rem;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .learn-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .learn-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* ---------- Проекты ---------- */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 28px;
+            margin-top: 8px;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 28px 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        [data-theme="dark"] .project-card:hover {
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .project-card .emoji-big {
+            font-size: 2.4rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .project-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .project-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .project-card .tag {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 4px 16px;
+            background: var(--accent);
+            color: #fff;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        /* ---------- Контакты ---------- */
+        .contacts-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px 48px;
+            margin-top: 8px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .contact-item:hover {
+            color: var(--accent);
+        }
+
+        .contact-item .emoji {
+            font-size: 1.6rem;
+        }
+
+        /* ---------- Футер ---------- */
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            transition: border var(--transition);
+        }
+
+        /* ---------- Адаптив (телефон) ---------- */
+        @media (max-width: 760px) {
+            .hero h1 {
+                font-size: 2.6rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .hero .bio {
+                font-size: 1rem;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            section {
+                padding: 56px 0;
+            }
+
+            .theme-toggle {
+                top: 12px;
+                right: 12px;
+                padding: 8px 14px;
+                font-size: 0.95rem;
+            }
+
+            .theme-toggle .icon {
+                font-size: 1.1rem;
+            }
+
+            .btn {
+                padding: 12px 28px;
+                font-size: 0.95rem;
+            }
+
+            .learn-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contacts-row {
+                flex-direction: column;
+                gap: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .learn-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero-actions .btn {
+                width: 100%;
+                max-width: 280px;
+                text-align: center;
+            }
+        }
+
+        /* ---------- Анимация при загрузке (лёгкая) ---------- */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.7s ease forwards;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .delay-1 {
+            animation-delay: 0.1s;
+        }
+        .delay-2 {
+            animation-delay: 0.2s;
+        }
+        .delay-3 {
+            animation-delay: 0.3s;
+        }
+        .delay-4 {
+            animation-delay: 0.4s;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============================================================
+    HTML
+    ============================================================ -->
+
+    <!-- Кнопка переключения темы -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+        <span class="icon" id="themeIcon">🌙</span>
+        <span id="themeLabel">Тёмная</span>
+    </button>
+
+    <!-- ГЕРО (первый экран) -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <span class="hero-avatar fade-up">👨‍💻</span>
+            <h1 class="fade-up delay-1">Иван Каширин</h1>
+            <p class="subtitle fade-up delay-2">Начинающий AI-разработчик</p>
+            <p class="bio fade-up delay-3">
+                Создаю простые и полезные вещи с помощью кода.
+                Верю, что технологии должны работать на человека.
+                Начинаю свой путь в IT с AI, вебом и ботами.
+            </p>
+            <div class="hero-actions fade-up delay-4">
+                <a href="#projects" class="btn">Мои проекты</a>
+                <a href="#contacts" class="btn btn-outline">Связаться</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Обо мне -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">Обо мне</h2>
+            <p class="section-sub">Кто я, чем увлекаюсь и что уже умею.</p>
+
+            <div class="about-grid">
+                <div class="about-text">
+                    <p>
+                        Меня зовут Иван, я из России. Начал изучать программирование
+                        с интереса к искусственному интеллекту и автоматизации.
+                        Сейчас я на старте пути, но уже успел освоить базовые
+                        инструменты разработки.
+                    </p>
+                    <p>
+                        Мне нравится превращать идеи в работающие прототипы —
+                        будь то веб-страница, бот для Telegram или небольшое
+                        AI-приложение. В свободное время читаю про машинное обучение,
+                        смотрю лекции и собираю конструкторы.
+                    </p>
+                </div>
+                <ul class="about-list">
+                    <li><span class="emoji">🎓</span> Самоучка, постоянный студент</li>
+                    <li><span class="emoji">🧠</span> Интересуюсь нейросетями и NLP</li>
+                    <li><span class="emoji">🛠️</span> Владею Python, HTML, CSS, JS</li>
+                    <li><span class="emoji">☁️</span> Пробую облачные сервисы (в процессе)</li>
+                    <li><span class="emoji">📚</span> Читаю документацию и статьи каждый день</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Что я хочу научиться создавать -->
+    <section id="learn">
+        <div class="container">
+            <h2 class="section-title">Что я хочу научиться создавать</h2>
+            <p class="section-sub">Мои главные направления развития.</p>
+
+            <div class="learn-grid">
+                <div class="learn-card">
+                    <span class="icon">🌐</span>
+                    <h3>Сайты</h3>
+                    <p>Адаптивные, быстрые и красивые веб-страницы. От лендингов до небольших веб-сервисов.</p>
+                </div>
+                <div class="learn-card">
+                    <span class="icon">🤖</span>
+                    <h3>Telegram-боты</h3>
+                    <p>Умные боты для общения, уведомлений, обработки данных и автоматизации задач.</p>
+                </div>
+                <div class="learn-card">
+                    <span class="icon">🧪</span>
+                    <h3>AI-приложения</h3>
+                    <p>Инструменты с использованием нейросетей: распознавание, генерация, анализ текста и изображений.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Мои проекты -->
+    <section id="projects">
+        <div class="container">
+            <h2 class="section-title">Мои проекты</h2>
+            <p class="section-sub">Пока здесь один проект, но я активно работаю над новыми.</p>
+
+            <div class="projects-grid">
+                <div class="project-card">
+                    <span class="emoji-big">🚀</span>
+                    <h3>Мой первый сайт</h3>
+                    <p>Этот самый сайт — моя первая полноценная работа. Сделал с нуля, добавил тёмную тему и адаптив.</p>
+                    <span class="tag">#HTML #CSS #JS</span>
+                </div>
+                <!-- Здесь можно будет добавить новые карточки проектов -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Контакты -->
+    <section id="contacts">
+        <div class="container">
+            <h2 class="section-title">Контакты</h2>
+            <p class="section-sub">Буду рад новым знакомствам и вопросам.</p>
+
+            <div class="contacts-row">
+                <a href="mailto:ivan.kashirin@example.com" class="contact-item">
+                    <span class="emoji">📧</span> tankov.22@bk.ru
+                </a>
+                <a href="https://t.me/nelegali07" target="_blank" rel="noopener" class="contact-item">
+                    <span class="emoji">💬</span> Telegram
+                </a>
+                <a href="https://github.com/chapmanx" target="_blank" rel="noopener" class="contact-item">
+                    <span class="emoji">🐙</span> GitHub
+                </a>
+                <span class="contact-item">
+                    <span class="emoji">📍</span> Россия, Ставрополь
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Иван Каширин. Сделано с ❤️ и чашкой чая.</p>
+        </div>
+    </footer>
+
+    <!-- ============================================================
+    JAVASCRIPT
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ---------- 1. Переключение темы ----------
+            const toggleBtn = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            const themeLabel = document.getElementById('themeLabel');
+
+            // Проверяем сохранённую тему
+            const storedTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(storedTheme);
+
+            toggleBtn.addEventListener('click', function() {
+                const current = document.documentElement.getAttribute('data-theme');
+                const next = current === 'dark' ? 'light' : 'dark';
+                applyTheme(next);
+                localStorage.setItem('theme', next);
+            });
+
+            function applyTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                if (theme === 'dark') {
+                    themeIcon.textContent = '☀️';
+                    themeLabel.textContent = 'Светлая';
+                } else {
+                    themeIcon.textContent = '🌙';
+                    themeLabel.textContent = 'Тёмная';
+                }
+            }
+
+            // ---------- 2. Плавная прокрутка для кнопки "Мои проекты" ----------
+            // (работает через href="#projects" и scroll-behavior: smooth)
+
+            // ---------- 3. Дополнительно: небольшая анимация появления ----------
+            // всё уже сделано через CSS-классы .fade-up
+
+            // ---------- 4. (Опционально) можно добавить лёгкий параллакс или эффект ----------
+            // но оставим минимализм
+
+            console.log('💻 Сайт Ивана Каширина загружен!');
+        })();
+    </script>
+
+    <!--
+    ============================================================
+    КОРОТКОЕ ОБЪЯСНЕНИЕ
+    ============================================================
+
+    ГДЕ НАХОДИТСЯ HTML:
+    — Весь HTML-код находится между тегами <body> и </body>.
+    — Секции идут по порядку: герой, обо мне, чему хочу научиться,
+      проекты, контакты, футер.
+
+    ГДЕ CSS:
+    — Все стили находятся внутри тега <style> в <head>.
+    — Используются CSS-переменные (--bg, --text и др.) для
+      светлой / тёмной темы.
+    — Медиа-запросы делают сайт адаптивным.
+
+    ГДЕ JavaScript:
+    — Весь JS-код находится в конце документа, внутри тега <script>.
+    — Управляет переключением темы, сохраняет выбор в localStorage.
+    — Дополнительно: плавная прокрутка (через CSS) и лёгкие эффекты.
+
+    ============================================================
+    5 МЕСТ, КОТОРЫЕ ВЫ МОЖЕТЕ ЛЕГКО ИЗМЕНИТЬ САМОСТОЯТЕЛЬНО:
+    ============================================================
+
+    1. Имя и подпись
+       — Строка 98: «Иван Каширин»
+       — Строка 99: «Начинающий AI-разработчик»
+
+    2. Текст «обо мне»
+       — Строки 119–122: два абзаца с описанием.
+         Можете переписать их полностью.
+
+    3. Список интересов / фактов обо мне
+       — Строки 126–130: пункты <li> внутри .about-list.
+         Меняйте текст и эмодзи.
+
+    4. Карточки «Что хочу научиться создавать»
+       — Строки 141–157: три карточки .learn-card.
+         Меняйте иконку, заголовок и описание.
+
+    5. Контакты
+       — Строки 179–190: email, Telegram, GitHub, город.
+         Замените ссылки и текст на свои.
+
+    Также легко поменять:
+    — Цветовую тему: переменные --accent в :root (строка 23).
+    — Проекты: добавить новую карточку в .projects-grid (строка 170).
+    — Эмодзи в герое (строка 95) и других местах.
+    -->
+</body>
+</html>
